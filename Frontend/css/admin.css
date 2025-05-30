@@ -1,0 +1,85 @@
+
+.admin-stats {
+  background: rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 1.2em 2em;
+  margin-bottom: 2em;
+  box-shadow: 0 2px 8px #0b0d0f22;
+  color: #003554;
+  font-size: 1.1em;
+} 
+
+body.dark-mode .admin-stats {
+  color: white;
+}
+
+  button.danger {
+  background-color: #ff595e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+
+button.accent {
+  background-color: #48cae4;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+  
+button:hover {
+  opacity: 0.9;
+  cursor: pointer;
+  transform: scale(1.03);
+} 
+
+body.dark-mode { 
+  background: #181c1f; 
+  color: #f1f1f1;
+} 
+
+body.dark-mode .admin-section,
+body.dark-mode main, 
+body.dark-mode .footer {
+  background: #181c1f !important;
+}
+
+/* body.dark-mode .admin-footer {
+  background: green; 
+  color: #f1f1f1;
+} */
+
+body.dark-mode .admin-header {
+  background: #23272b;  /* sau poți folosi #181c1f pentru și mai închis */
+}
+   
+.admin-header {
+  width: 100%;
+  background: #38b6ff;
+  margin-bottom: 2em;
+}
+
+.admin-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.admin-header-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.admin-header-content #darkModeToggle {
+  position: absolute;
+  right: 2em;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+}  
+
+

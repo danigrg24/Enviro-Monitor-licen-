@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EnviroMonitor - Admin</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<header class="admin-header">
+  <div class="admin-header-content"> 
+    <div class="admin-header-center">
+      <h1>🔒 Panou de administrare</h1> 
+      <nav>
+        <a href="index.html">Live</a>
+        <a href="history.html">Istoric</a>
+        <a href="predictions.html">Predicții</a>
+        <a href="admin.html">Admin</a> 
+      </nav>
+    </div> 
+    <button id="darkModeToggle" class="accent">🌙 Dark mode</button>
+  </div>
+</header>
+
+
+  <main class="admin-section">
+    <h2>⚙️ Acțiuni disponibile:</h2>
+    <div id="admin-stats" class="admin-stats">
+    <p>Se încarcă statisticile...</p>
+    </div>
+    <div class="admin-actions">
+      <button id="resetBtn" class="danger">🗑️ Șterge toate datele</button>
+      <button id="exportBtn" class="accent">📥 Exportă date în CSV</button>
+      <button id="logoutBtn" class="logout">🚪 Logout</button>
+    </div>
+    <p id="statusMsg"></p>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 EnviroMonitor – Administrare date</p>
+  </footer>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

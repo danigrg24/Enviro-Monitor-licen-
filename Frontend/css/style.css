@@ -1,0 +1,251 @@
+html, body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f4f9f9;
+    color: #333; 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+main {
+  flex: 1;
+}
+
+header {
+  background-color: #38b6ff;
+  color: white;
+  padding: 1em;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+  
+nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.live-values {
+  display: flex;
+  gap: 2em;
+  margin-bottom: 2em;
+}
+  
+.card {
+  background: white;
+  border-radius: 1em;
+  padding: 1.5em;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  min-width: 150px;
+}
+
+.card h2 {
+  margin-bottom: 0.5em;
+  font-size: 1.2em;
+}
+
+.card p {
+  font-size: 2em;
+  margin: 0;
+}
+
+.chart-section {
+  width: 90%;
+  max-width: 800px;
+}
+
+footer {
+  background-color: #222;
+  color: white;
+  text-align: center;
+  padding: 1em;
+  margin-top: 3em;
+}
+
+@media (max-width: 600px) {
+  .live-values {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.admin-section {
+  padding: 2em;
+  text-align: center;
+}
+
+.admin-section button {
+  padding: 1em 2em;
+  margin: 1em;
+  font-size: 1.1em;
+  background-color: #ff595e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+  
+.admin-section button:hover {
+  background-color: #d92027;
+} 
+
+button {
+  font-family: inherit;
+  font-size: 1em
+}
+
+button.refresh {
+background-color: #38b6ff;
+color: white;
+border: none;
+border-radius: 8px;
+padding: 0.7em 1.5em;
+font-size: 1em;
+margin-bottom: 1em;
+transition: background 0.2s;
+}
+
+button.refresh:hover {
+  background-color: #0077b6;
+}
+
+.admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  align-items: center;
+}
+  
+  
+#statusMsg {
+  margin-top: 1em;
+  font-weight: bold;
+  color: #007f5f;
+}  
+
+#errorMsg {
+color: #ff595e;
+font-weight: bold;
+margin-top: 1em;
+}
+
+#successMsg {
+  color: #007f5f;
+  font-weight: bold;
+  margin-top: 1em;
+}
+
+/* Loader spinner */
+#loader {
+  display: none;
+  margin: 2em auto;
+  border: 6px solid #e0e0e0;
+  border-top: 6px solid #38b6ff;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+   
+  /* --- Navbar Modern --- */
+/* .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #38b6ff, #00c6ff);
+  padding: 1em 2em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.8em;
+  font-weight: bold;
+  color: white;
+  gap: 0.5em;
+}
+
+.navbar .highlight {
+  color: #fffacd;
+}
+
+.navbar .logo img {
+  height: 32px;
+  width: 32px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2em;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1em;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: white;
+  transition: width 0.3s ease-in-out;
+}
+
+.nav-links a:hover {
+  color: #fffacd;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .nav-links {
+    flex-direction: column;
+    background-color: #00c6ff;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    padding: 1em;
+    display: none;
+  }
+
+  .navbar .menu-toggle {
+    display: block;
+  }
+} */
+
+  

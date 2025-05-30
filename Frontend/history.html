@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EnviroMonitor - Istoric</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <script>
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "login.html";
+    }
+  </script>
+  
+  <header>
+    <h1>📊 Istoric Măsurători</h1>
+    <nav>
+      <a href="index.html">Live</a>
+      <a href="history.html">Istoric</a>
+      <a href="predictions.html">Predicții</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="chart-section">
+      <canvas id="historyChart" width="800" height="400"></canvas>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 EnviroMonitor – Istoric date senzor</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/history.js"></script>
+</body>
+</html>
