@@ -35,7 +35,7 @@ const db = new sqlite3.Database(path.join(__dirname, "../data/database.db"), (er
 
 // Ruta POST: primește date de la senzor
 app.post("/api/data", (req, res) => {
-  const { temperature, humidity } = req.body;
+  const { temperature, humidity, temp_ds } = req.body;
   if (
     typeof temperature !== "number" ||
     typeof humidity !== "number" ||
@@ -45,8 +45,8 @@ app.post("/api/data", (req, res) => {
     return res.status(400).json({ error: "Date invalide: temperatura (-40...80°C), umiditate (0...100%)" });
   }
 
-  const stmt = db.prepare("INSERT INTO measurements (temperature, humidity) VALUES (?, ?)");
-  stmt.run(temperature, humidity, function (err) {
+  const stmt = db.prepare("INSERT INTO measurements (temperature, humidity, temp_ds) VALUES (?, ?, ?)");
+  stmt.run(temperature, humidity, temp_ds, function (err) {
     if (err) {
       console.error("Eroare la inserare:", err.message);
       return res.status(500).json({ error: "Inserare eșuată" });
@@ -56,34 +56,34 @@ app.post("/api/data", (req, res) => {
 });
 
 // Ruta GET: returnează ultimele N măsurători (ex: 20)
-// app.get("/api/history", (req, res) => {
-//   db.all("SELECT * FROM measurements ORDER BY timestamp DESC LIMIT 20", [], (err, rows) => {
-//     if (err) {
-//       console.error("Eroare la interogare:", err.message);
-//       return res.status(500).json({ error: "Eroare la citire" });
-//     }
-//     res.json(rows);
-//   });
-// });
+app.get("/api/history", (req, res) => {
+  db.all("SELECT * FROM measurements ORDER BY timestamp DESC LIMIT 20", [], (err, rows) => {
+    if (err) {
+      console.error("Eroare la interogare:", err.message);
+      return res.status(500).json({ error: "Eroare la citire" });
+    }
+    res.json(rows);
+  });
+});
 
 // Ruta GET: măsurători într-un interval de timp
-app.get("/api/history-range", verifyToken, (req, res) => {
-  const { from, to } = req.query;
-  if (!from || !to) {
-    return res.status(400).json({ error: "Parametrii 'from' și 'to' sunt necesari (YYYY-MM-DD HH:MM:SS)" });
-  }
-  db.all(
-    "SELECT * FROM measurements WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp ASC",
-    [from, to],
-    (err, rows) => {
-      if (err) {
-        console.error("Eroare la interogare:", err.message);
-        return res.status(500).json({ error: "Eroare la citire" });
-      }
-      res.json(rows);
-    }
-  );
-});
+// app.get("/api/history-range", verifyToken, (req, res) => {
+//   const { from, to } = req.query;
+//   if (!from || !to) {
+//     return res.status(400).json({ error: "Parametrii 'from' și 'to' sunt necesari (YYYY-MM-DD HH:MM:SS)" });
+//   }
+//   db.all(
+//     "SELECT * FROM measurements WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp ASC",
+//     [from, to],
+//     (err, rows) => {
+//       if (err) {
+//         console.error("Eroare la interogare:", err.message);
+//         return res.status(500).json({ error: "Eroare la citire" });
+//       }
+//       res.json(rows);
+//     }
+//   );
+// });
 
 // Ruta GET: ultima măsurătoare (pentru afișare live)
 app.get("/api/latest", (req, res) => {
@@ -178,6 +178,32 @@ app.get("/api/history-paginated", verifyToken, (req, res) => {
       res.json(rows);
     }
   );
+});
+ 
+app.get("/api/export-range", verifyToken, (req, res) => {
+const { from, to } = req.query;
+if (!from || !to) {
+  return res.status(400).json({ message: "Parametrii 'from' și 'to' sunt necesari (YYYY-MM-DD HH:MM:SS)" });
+}
+db.all(
+  "SELECT * FROM measurements WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp ASC",
+  [from, to],
+  (err, rows) => {
+    if (err) {
+      console.error("Eroare la export:", err.message);
+      return res.status(500).json({ message: "Eroare la export: " + err.message });
+    }
+    if (!rows || rows.length === 0) {
+      return res.status(404).json({ message: "Nu există date de exportat pentru acest interval." });
+    }
+    const json2csv = new Parser({ fields: ["id", "temperature", "humidity", "timestamp"] });
+    const csv = json2csv.parse(rows);
+
+    res.header("Content-Type", "text/csv");
+    res.attachment("masuratori_filtrate.csv");
+    res.send(csv);
+  }
+);
 });
 
 // Pornire server
