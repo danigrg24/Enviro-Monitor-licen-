@@ -4,19 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EnviroMonitor - Date Live</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css" /> 
+  <link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
-  <!-- <header>
-    <h1>🌿 EnviroMonitor</h1>
-    <nav>
-      <a href="index.html">Live</a>
-      <a href="history.html">Istoric</a>
-      <a href="predictions.html">Predicții</a>
-      <a href="admin.html">Admin</a>
-    </nav>
-  </header> --> 
-
   <script>
     const token = localStorage.getItem("token");
     if (!token) {
@@ -24,41 +15,50 @@
     }
   </script>  
 
-  <header>
-    <h1>
-      <!-- <img src="Frontend/Green-leaves-logo-1.webp" alt="EnviroMonitor Logo"> -->
-      <span>🌿 Enviro<span class="highlight">Monitor</span></span>
-    </h1>
-    <nav>
-        <a href="index.html">Live</a>
-        <a href="history.html">Istoric</a>
-        <a href="predictions.html">Predicții</a>
-        <a href="admin.html">Admin</a>
-    </nav>
-  </header>
+  <header class="admin-header">
+    <div class="admin-header-content"> 
+      <div class="admin-header-center">
+        <h1>
+          <!-- <img src="Frontend/Green-leaves-logo-1.webp" alt="EnviroMonitor Logo"> -->
+          <span>🌿 Enviro<span class="highlight">Monitor</span></span>
+        </h1>
+        <nav>
+          <a href="index.html">Live</a>
+          <a href="history.html">Istoric</a>
+          <a href="predictions.html">Predicții</a>
+          <a href="admin.html">Admin</a>
+        </nav>
+      </div> 
+      <button id="darkModeToggle" class="accent">🌙 Dark mode</button>
+    </div>
+  </header> 
 
-  <main>
-    <section class="live-values">
-      <div class="card">
-        <h2>🌡️ Temperatură</h2>
-        <p id="temp">-- °C</p>
-      </div>
-      <div class="card">
-        <h2>💧 Umiditate</h2>
-        <p id="hum">-- %</p>
-      </div>
-    </section>
-
-    <section class="chart-section">
-      <canvas id="liveChart" width="800" height="400"></canvas>
-    </section>
-  </main>
+<main>
+  <section class="live-values">
+    <!-- <div id="alertBox" class="hidden"></div> -->
+    <div class="card">
+      <h2>🌡️ Temperatură senzor DHT22</h2>
+      <p id="temp">-- °C</p>
+    </div>
+    <div class="card">
+      <h2>💧 Umiditate senzor DHT22</h2>
+      <p id="hum">-- %</p>
+    </div>
+    <div class="card">
+      <h2>🌡️ Temperatură senzor DS18B20</h2>
+      <p id="temp_ds">-- °C</p>
+  </section>
+  <section class="chart-section">
+    <canvas id="liveChart" width="800" height="400"></canvas>
+  </section>
+</main>
 
   <footer>
     <p>© 2025 EnviroMonitor – Date în timp real cu Raspberry Pi</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/main.js"></script> 
+  <script src="js/theme.js"></script>
 </body>
 </html>

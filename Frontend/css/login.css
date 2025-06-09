@@ -1,4 +1,3 @@
- 
 body {
     margin: 0;
     padding: 0;
@@ -11,7 +10,10 @@ body {
     justify-content: center; 
     flex-direction: column;
     overflow: hidden;
-    color: white;
+    color: white; 
+    /* Imaginea de fundal */
+    background: url('../bckg.jpg') no-repeat center center fixed;
+    background-size: cover;
   } 
   
 .login-wrapper {
@@ -27,7 +29,7 @@ body {
 }
 
 .login-box {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.38);
   box-shadow: 0 12px 32px rgba(56,182,255,0.25), 0 1.5px 4px rgba(0,0,0,0.08);
   border: 1.5px solid rgba(255,255,255,0.25);
   backdrop-filter: blur(18px) saturate(180%);
@@ -48,22 +50,22 @@ h1 {
   letter-spacing: 0.01em;
 }
 
-  .login-box:hover {
-    transform: translateY(0);
-  }
+.login-box:hover {
+  transform: translateY(0);
+}
   
-  input {
-    padding: 0.8em 1em;
-    border: none;
-    border-radius: 10px;
-    font-size: 1em;
-    outline: none;
-    transition: box-shadow 0.3s;
-  }
+input {
+  padding: 0.8em 1em;
+  border: none;
+  border-radius: 10px;
+  font-size: 1em;
+  outline: none;
+  transition: box-shadow 0.3s;
+}
   
- input:focus {
-  box-shadow: 0 0 12px #38b6ff99;
-  border: 1.5px solid #38b6ff;
+input:focus {
+box-shadow: 0 0 12px #38b6ff99;
+border: 1.5px solid #38b6ff;
 }
   
 button {
@@ -134,9 +136,9 @@ animation: logoPop 1.2s cubic-bezier(.4,2,.6,1);
 .login-footer {
     text-align: center; 
     font-weight: bold;
-    color: #fffacd;
-    font-size: 0.95em;
-    opacity: 0.85;
+    color: white;
+    font-size: 1em;
+    /* opacity: 0.85; */
     padding: 1.2em 0 0.8em 0; 
     text-decoration: none; 
     transition-duration: 1.2s;

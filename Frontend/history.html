@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EnviroMonitor - Istoric</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css" /> 
+  <link rel="stylesheet" href="css/history.css" />
 </head>
 <body>
 
@@ -15,20 +16,32 @@
     }
   </script>
   
-  <header>
-    <h1>📊 Istoric Măsurători</h1>
-    <nav>
-      <a href="index.html">Live</a>
-      <a href="history.html">Istoric</a>
-      <a href="predictions.html">Predicții</a>
-      <a href="admin.html">Admin</a>
-    </nav>
-  </header>
+<header class="admin-header">
+  <div class="admin-header-content"> 
+    <div class="admin-header-center">
+      <h1>📊 Istoric Măsurători</h1> 
+      <nav>
+        <a href="index.html">Live</a>
+        <a href="history.html">Istoric</a>
+        <a href="predictions.html">Predicții</a>
+        <a href="admin.html">Admin</a> 
+      </nav>
+    </div> 
+    <button id="darkModeToggle" class="accent">🌙 Dark mode</button>
+  </div>
+</header>
 
   <main>
-    <section class="chart-section">
-      <canvas id="historyChart" width="800" height="400"></canvas>
-    </section>
+  <section class="chart-section">
+    <!-- Formular export filtrat CSV -->
+    <form id="exportRangeForm" style="margin-bottom:1em; display:flex; gap:1em; align-items:center;">
+      <label>De la: <input type="datetime-local" id="exportFrom" required></label>
+      <label>Până la: <input type="datetime-local" id="exportTo" required></label>
+      <button type="submit" class="accent">Exportă datele în format CSV</button>
+    </form>
+    <div id="exportRangeMsg" style="margin-bottom:1em; color:#ff595e; font-weight:bold;"></div>
+    <canvas id="historyChart" width="800" height="400"></canvas>
+  </section>
   </main>
 
   <footer>
@@ -37,5 +50,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/history.js"></script>
+  <script src="js/theme.js"></script>
 </body>
 </html>

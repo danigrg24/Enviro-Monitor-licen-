@@ -1,3 +1,6 @@
+html, body {
+  overflow-x: hidden;
+}
 
 .admin-stats {
   background: rgba(255,255,255,0.15);
@@ -13,15 +16,15 @@ body.dark-mode .admin-stats {
   color: white;
 }
 
-  button.danger {
-  background-color: #ff595e;
-  color: white;
-  border: none;
-  border-radius: 10px;
+button.danger {
+background-color: #ff595e;
+color: white;
+border: none;
+border-radius: 10px;
 }
 
 button.accent {
-  background-color: #48cae4;
+  background-color: #0077b6;
   color: white;
   border: none;
   border-radius: 10px;
@@ -39,8 +42,7 @@ body.dark-mode {
 } 
 
 body.dark-mode .admin-section,
-body.dark-mode main, 
-body.dark-mode .footer {
+body.dark-mode main {
   background: #181c1f !important;
 }
 
@@ -49,7 +51,8 @@ body.dark-mode .footer {
   color: #f1f1f1;
 } */
 
-body.dark-mode .admin-header {
+body.dark-mode .admin-header, 
+body.dark-mode .footer {
   background: #23272b;  /* sau poți folosi #181c1f pentru și mai închis */
 }
    
@@ -82,4 +85,26 @@ body.dark-mode .admin-header {
   margin: 0;
 }  
 
+/* footer {
+  margin: 0;
+  padding: 1em 0;
+  background: transparent;
+  color: black;
+  border: none;
+  box-shadow: none;
+} */ 
 
+/* body.dark-mode footer {
+  background: #181c1f !important;
+  color: #f1f1f1;
+} */
+
+/* footer p {
+  margin: 0;
+  font-size: 0.9em;
+  text-align: center;
+} */ 
+
+footer p {
+  font-weight: bold;
+}

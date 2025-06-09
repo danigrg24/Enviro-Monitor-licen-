@@ -5,6 +5,7 @@ async function loadPrediction() {
   
       const temps = data.map(row => row.temperature).reverse();
       const hums = data.map(row => row.humidity).reverse();
+      const tempDs = data.map(row => row.temp_ds).reverse();
       const labels = Array.from({ length: temps.length + 5 }, (_, i) => `T${i + 1}`);
   
       const predictLinear = (values) => {
@@ -22,45 +23,70 @@ async function loadPrediction() {
       };
   
       const predictedTemps = predictLinear(temps);
-      const predictedHums = predictLinear(hums);
+      const predictedHums = predictLinear(hums); 
+      const predictedTempDs = predictLinear(tempDs); 
   
       new Chart(document.getElementById("predictionChart"), {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [
-            {
-              label: "Temperatură (prezisă)",
-              data: predictedTemps,
-              borderColor: "#f94144",
-              borderDash: [5, 5],
-              tension: 0.2,
-              fill: false
-            },
-            {
-              label: "Umiditate (prezisă)",
-              data: predictedHums,
-              borderColor: "#577590",
-              borderDash: [5, 5],
-              tension: 0.2,
-              fill: false
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { position: 'bottom' }
-          },
-          scales: {
-            y: {
-              title: { display: true, text: 'Valori estimate' },
-              suggestedMin: 0,
-              suggestedMax: 100
-            }
-          }
-        }
-      });
+  type: 'line',
+  data: {
+    labels,
+    datasets: [
+      {
+        label: "Temperatură DHT22 (prezisă)",
+        data: predictedTemps,
+        borderColor: "#f94144",
+        borderDash: [5, 5],
+        tension: 0.2,
+        fill: false
+      },
+      {
+        label: "Umiditate DHT22 (prezisă)",
+        data: predictedHums,
+        borderColor: "#577590",
+        borderDash: [5, 5],
+        tension: 0.2,
+        fill: false
+      },
+      {
+        label: "Temperatură DS18B20 (°C)", 
+        data: predictedTempDs,
+        borderColor: "#277da1",
+        borderDash: [5, 5],
+        tension: 0.3,
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: "#003554" } }
+    },
+    scales: {
+      y: {
+        title: { display: true, text: 'Valori estimate', color: "#003554" },
+        ticks: { color: "#003554" },
+        grid: { color: "#e0e0e0" },
+        suggestedMin: 0,
+        suggestedMax: 100
+      },
+      x: {
+        ticks: { color: "#003554" },
+        grid: { color: "#e0e0e0" }
+      }
+    }
+  },
+  plugins: [{
+    beforeDraw: (chart) => {
+      const ctx = chart.ctx;
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-over';
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, chart.width, chart.height);
+      ctx.restore();
+    }
+  }]
+});
   
     } catch (err) {
       console.error("Eroare la încărcarea predicțiilor:", err);

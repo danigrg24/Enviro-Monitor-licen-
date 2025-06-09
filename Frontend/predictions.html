@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EnviroMonitor - Predicții</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css" /> 
+  <link rel="stylesheet" href="css/predictions.css" />
 </head>
 <body>
 
@@ -15,7 +16,9 @@
     }
   </script>
   
-  <header>
+  <header class="admin-header">
+  <div class="admin-header-content"> 
+    <div class="admin-header-center">
     <h1>🔮 Predicții</h1>
     <nav>
       <a href="index.html">Live</a>
@@ -23,7 +26,10 @@
       <a href="predictions.html">Predicții</a>
       <a href="admin.html">Admin</a>
     </nav>
-  </header>
+    </div> 
+    <button id="darkModeToggle" class="accent">🌙 Dark mode</button>
+  </div>
+  </header> 
 
   <main>
     <section class="chart-section">
@@ -36,6 +42,7 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="js/predictions.js"></script>
+  <script src="js/predictions.js"></script> 
+  <script src="js/theme.js"></script>
 </body>
 </html>
