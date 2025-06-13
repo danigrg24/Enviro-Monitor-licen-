@@ -4,9 +4,9 @@ const axios = require("axios");
 
 function generateFakeData() {
   return {
-    temperature: parseFloat((20 + Math.random() * 5).toFixed(1)), // 20–25°C
-    humidity: parseFloat((40 + Math.random() * 20).toFixed(1)),    // 40–60%
-    temp_ds: parseFloat((19 + Math.random() * 6).toFixed(1))      // 19–25°C
+    temperature: parseFloat((20 + Math.random() * 10).toFixed(1)), // 20–30°C
+    humidity: parseFloat((40 + Math.random() * 30).toFixed(1)),    // 40–70%
+    temp_ds: parseFloat((20 + Math.random() * 10).toFixed(1))      // 20–30°C
   };
 }
 

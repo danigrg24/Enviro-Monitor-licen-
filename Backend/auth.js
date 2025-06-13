@@ -1,30 +1,26 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken"); 
-require("dotenv").config();
-const JWT_SECRET = process.env.JWT_SECRET || "12345678"; // Cheia secretă pentru semnarea token-urilor
+const jwt = require("jsonwebtoken");
+require("dotenv").config({ path: __dirname + "/authentification.env" });
 
+const JWT_SECRET = process.env.JWT_SECRET || "12345678";
+const ADMIN_USER = process.env.ADMIN_USER;
+const ADMIN_PASS_HASH = process.env.ADMIN_PASS_HASH;
 
-// Utilizator de test
-const mockUser = {
-  username: "admin",
-  // Parolă: andreidaniel2404
-  passwordHash: bcrypt.hashSync("andreidaniel2404", 10)
-};
-
-/**
- * Authenticates a user by verifying the provided username and password.
- * @param {Object} req - The request object containing the body with username and password.
- * @param {Object} res - The response object used to send the authentication result.
- * @returns {Object} - A JSON response with a JWT token if authentication is successful.
- */
 function authenticate(req, res) {
   const { username, password } = req.body;
 
-  if (username !== mockUser.username) {
+  // Debug log (poți șterge după ce verifici)
+  console.log("Username primit:", username);
+  console.log("ADMIN_USER:", ADMIN_USER);
+  console.log("Parola primită:", password);
+  console.log("ADMIN_PASS_HASH:", ADMIN_PASS_HASH);
+  console.log("Rezultat bcrypt:", bcrypt.compareSync(password, ADMIN_PASS_HASH));
+
+  if (username !== ADMIN_USER) {
     return res.status(401).json({ message: "Utilizator inexistent" });
   }
 
-  const isValid = bcrypt.compareSync(password, mockUser.passwordHash);
+  const isValid = bcrypt.compareSync(password, ADMIN_PASS_HASH);
   if (!isValid) {
     return res.status(401).json({ message: "Parolă incorectă" });
   }
@@ -34,9 +30,6 @@ function authenticate(req, res) {
 }
 
 // Middleware function to verify the JWT token from the Authorization header.
-// If the token is valid, it attaches the user information to the request object and calls the next middleware.
-// If the token is missing or invalid, it sends an appropriate HTTP status code.
-
 function verifyToken(req, res, next) {
   const authorizationHeader = req.headers["authorization"];
   if (!authorizationHeader) return res.sendStatus(401);

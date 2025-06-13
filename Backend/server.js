@@ -5,7 +5,9 @@ const cors = require("cors");
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 const { authenticate, verifyToken } = require("./auth");
-const { Parser } = require("json2csv");
+const { Parser } = require("json2csv"); 
+const fs = require("fs");
+const THRESHOLD_FILE = __dirname + "/threshold.json";
 
 const app = express();
 require("dotenv").config();
@@ -57,13 +59,18 @@ app.post("/api/data", (req, res) => {
 
 // Ruta GET: returnează ultimele N măsurători (ex: 20)
 app.get("/api/history", (req, res) => {
-  db.all("SELECT * FROM measurements ORDER BY timestamp DESC LIMIT 20", [], (err, rows) => {
-    if (err) {
-      console.error("Eroare la interogare:", err.message);
-      return res.status(500).json({ error: "Eroare la citire" });
+  const limit = parseInt(req.query.limit) || 20;
+  db.all(
+    "SELECT * FROM measurements ORDER BY timestamp DESC LIMIT ?",
+    [limit],
+    (err, rows) => {
+      if (err) {
+        console.error("Eroare la interogare:", err.message);
+        return res.status(500).json({ error: "Eroare la citire" });
+      }
+      res.json(rows);
     }
-    res.json(rows);
-  });
+  );
 });
 
 // Ruta GET: măsurători într-un interval de timp
@@ -204,6 +211,23 @@ db.all(
     res.send(csv);
   }
 );
+});
+
+app.get('/api/threshold', (req, res) => {
+  let value = 25;
+  if (fs.existsSync(THRESHOLD_FILE)) {
+    value = JSON.parse(fs.readFileSync(THRESHOLD_FILE)).value;
+  }
+  res.json({ value });
+});
+
+app.post('/api/threshold', (req, res) => {
+  const { value } = req.body;
+  if (typeof value !== 'number' || value < 0 || value > 100) {
+    return res.status(400).json({ error: 'Prag invalid' });
+  }
+  fs.writeFileSync(THRESHOLD_FILE, JSON.stringify({ value }));
+  res.json({ success: true, value });
 });
 
 // Pornire server
