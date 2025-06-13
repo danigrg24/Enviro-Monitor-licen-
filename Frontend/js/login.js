@@ -1,7 +1,7 @@
 // Exemplu de funcție login cu feedback vizibil
 async function login() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
   const messageDiv = document.getElementById("message");
   messageDiv.textContent = "";
   messageDiv.className = "message"; // reset stil
@@ -9,7 +9,8 @@ async function login() {
 
   try {
 
-    const res = await fetch("http://localhost:3000/api/login", {
+    const res = await fetch("http://localhost:3000/api/login", 
+      {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password })

@@ -38,7 +38,7 @@
     <!-- <div id="alertBox" class="hidden"></div> -->
     <div class="card">
       <h2>🌡️ Temperatură senzor DHT22</h2>
-      <p id="temp">-- °C</p>
+        <p id="temp">-- °C</p>
     </div>
     <div class="card">
       <h2>💧 Umiditate senzor DHT22</h2>
@@ -47,6 +47,11 @@
     <div class="card">
       <h2>🌡️ Temperatură senzor DS18B20</h2>
       <p id="temp_ds">-- °C</p>
+      <div style="margin-top: 0.5em;">
+        <input type="number" id="thresholdInput" min="0" max="100" step="1" style="width:60px; font-size:1em;" title="Setează pragul de alertă">
+        <button id="saveThresholdBtn" style="font-size:0.9em;">Setează prag</button>
+        <span id="thresholdMsg" style="font-size:0.9em; color:#277da1; margin-left:0.5em;"></span>
+      </div>
   </section>
   <section class="chart-section">
     <canvas id="liveChart" width="800" height="400"></canvas>
