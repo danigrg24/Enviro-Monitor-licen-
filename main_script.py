@@ -42,7 +42,7 @@ except IndexError:
 
 # === VARIABILE CONTROL ===
 running = True
-threshold_temp = 25
+threshold_temp = get_threshold()  # Obține pragul inițial de la server
 profil_temperaturi = [24, 26, 28]
 
 # === FUNCȚII UTILE ===
@@ -71,6 +71,15 @@ def trimite_date_server(temp, hum):
             print(f"[{datetime.now()}] Eroare la trimitere: {r.status_code} {r.text}")
     except Exception as e:
         print(f"[{datetime.now()}] Eroare conexiune server: {e}")
+
+def get_threshold():
+    try:
+        r = requests.get("http://127.0.0.1:3000/api/threshold", timeout=2)
+        if r.status_code == 200:
+            return r.json().get("value", 25)
+    except Exception:
+        pass
+    return 25
 
 def increment_threshold(channel):
     global threshold_temp
