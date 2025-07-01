@@ -37,6 +37,10 @@
     <form id="exportRangeForm" style="margin-bottom:1em; display:flex; gap:1em; align-items:center;">
       <label>De la: <input type="datetime-local" id="exportFrom" required></label>
       <label>Până la: <input type="datetime-local" id="exportTo" required></label>
+      <label> 
+        <input type="checkbox" id="kalmanToggle">
+        Afișează datele DHT22 filtrate Kalman
+      </label>
       <button type="submit" class="accent">Exportă datele în format CSV</button>
     </form>
     <div id="exportRangeMsg" style="margin-bottom:1em; color:#ff595e; font-weight:bold;"></div>

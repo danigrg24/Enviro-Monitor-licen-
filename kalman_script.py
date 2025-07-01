@@ -3,7 +3,6 @@ import board
 import adafruit_dht
 import RPi.GPIO as GPIO
 import glob
-import os 
 import requests
 from datetime import datetime
 
@@ -12,20 +11,9 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 # === DEFINIRE PINI ===
-PIN_DHT = 17
-PIN_DS = 4
-LED_ROSU = 18
 LED_VERDE = 27
-BUZZER = 23
-BTN_INC = 24
-BTN_STOP = 25
 
-# === SETUP PINI ===
-GPIO.setup(LED_ROSU, GPIO.OUT)
 GPIO.setup(LED_VERDE, GPIO.OUT)
-GPIO.setup(BUZZER, GPIO.OUT)
-GPIO.setup(BTN_INC, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(BTN_STOP, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # === INIȚIALIZARE SENZORI ===
 dht_sensor = adafruit_dht.DHT22(board.D17)
@@ -38,7 +26,6 @@ except IndexError:
     print("Eroare: Senzorul DS18B20 nu a fost găsit.")
     device_file = None
 
-# === FUNCȚII UTILE ===
 def read_ds18b20():
     if not device_file:
         return None
@@ -55,8 +42,7 @@ def read_ds18b20():
 
 def trimite_date_server(temp, hum, temp_ds=None):
     try:
-        # url = "http://127.0.0.1:3000/api/data"
-        url = "http://192.168.137.1:3000/api/data" 
+        url = "http://192.168.137.1:3000/api/data"  # Înlocuiește cu IP-ul serverului tău
         payload = {"temperature": temp, "humidity": hum}
         if temp_ds is not None:
             payload["temp_ds"] = temp_ds
@@ -68,58 +54,56 @@ def trimite_date_server(temp, hum, temp_ds=None):
     except Exception as e:
         print(f"[{datetime.now()}] Eroare conexiune server: {e}")
 
-def increment_threshold(channel):
-    global threshold_temp
-    threshold_temp += 1
-    print(f"[{datetime.now()}] Prag temperatură crescut: {threshold_temp}°C")
+# === CLASĂ FILTRU KALMAN ===
+class KalmanFilter:
+    def __init__(self, process_variance, measurement_variance, initial_estimate=0):
+        self.process_variance = process_variance
+        self.measurement_variance = measurement_variance
+        self.estimate = initial_estimate
+        self.error_estimate = 1.0
 
-def stop_program(channel):
-    global running
-    running = False
-    print(f"[{datetime.now()}] Program oprit din buton.")
+    def update(self, measurement):
+        kalman_gain = self.error_estimate / (self.error_estimate + self.measurement_variance)
+        self.estimate = self.estimate + kalman_gain * (measurement - self.estimate)
+        self.error_estimate = (1.0 - kalman_gain) * self.error_estimate + self.process_variance
+        return self.estimate
 
-# === VARIABILE CONTROL ===
-running = True
-threshold_temp = 25  # Pragul inițial de temperatură
+# === FILTRE KALMAN ===
+kf_temp_dht = KalmanFilter(0.01, 0.2)
+kf_hum_dht = KalmanFilter(0.01, 0.4)
+kf_temp_ds = KalmanFilter(0.01, 0.2)
 
-# === EVENT DETECT PE BUTOANE ===
-GPIO.add_event_detect(BTN_INC, GPIO.FALLING, callback=increment_threshold, bouncetime=300)
-GPIO.add_event_detect(BTN_STOP, GPIO.FALLING, callback=stop_program, bouncetime=300)
-
-# === LOOP PRINCIPAL ===
 print("🔄 Pornim monitorizarea...")
 
-while running:
-    try:
+try:
+    while True:
         temp_dht = dht_sensor.temperature
         hum_dht = dht_sensor.humidity
         temp_ds = read_ds18b20()
+
+        # Aplică filtrarea Kalman dacă valorile sunt valide
+        if temp_dht is not None:
+            temp_dht = kf_temp_dht.update(temp_dht)
+        if hum_dht is not None:
+            hum_dht = kf_hum_dht.update(hum_dht)
+        if temp_ds is not None:
+            temp_ds = kf_temp_ds.update(temp_ds)
 
         print(f"[{datetime.now()}] DHT22: {temp_dht}°C / {hum_dht}%  |  DS18B20: {temp_ds}°C")
 
         # Trimite datele către server DOAR dacă valorile DHT sunt valide
         if temp_dht is not None and hum_dht is not None:
             trimite_date_server(temp_dht, hum_dht, temp_ds)
-
-        # === SEMNALIZARE DEPĂȘIRE PRAG ===
-        if (temp_dht is not None and temp_dht > threshold_temp) or (temp_ds is not None and temp_ds > threshold_temp):
-            GPIO.output(LED_ROSU, True)
-            GPIO.output(LED_VERDE, False)
-            for _ in range(3):
-                GPIO.output(BUZZER, True)
-                time.sleep(0.2)
-                GPIO.output(BUZZER, False)
-                time.sleep(0.2)
-        else:
-            GPIO.output(LED_ROSU, False)
-            GPIO.output(BUZZER, False)
             GPIO.output(LED_VERDE, True)
-            time.sleep(4)
+        else:
+            GPIO.output(LED_VERDE, False)
 
-    except Exception as e:
-        print(f"Eroare: {e}")
         time.sleep(2)
 
-# === CURĂȚARE GPIO ===
-GPIO.cleanup()
-print("Script încheiat. GPIO resetat.")
+except KeyboardInterrupt:
+    print("Script oprit manual.")
+except Exception as e:
+    print(f"Eroare: {e}")
+finally:
+    GPIO.cleanup()
+    print("Script încheiat. GPIO resetat.")

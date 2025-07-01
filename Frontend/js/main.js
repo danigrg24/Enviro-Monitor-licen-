@@ -127,28 +127,29 @@ async function loadInitialHistory() {
   chart.update();
 }
 
-async function loadThreshold() {
-  const res = await fetch("http://localhost:3000/api/threshold");
-  const data = await res.json();
-  document.getElementById("thresholdInput").value = data.value;
-}
-async function saveThreshold() {
-  const value = Number(document.getElementById("thresholdInput").value);
-  const msg = document.getElementById("thresholdMsg");
-  const res = await fetch("http://localhost:3000/api/threshold", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ value })
-  });
-  if (res.ok) {
-    msg.textContent = "✔️";
-    setTimeout(() => msg.textContent = "", 1500);
-  } else {
-    msg.textContent = "Eroare!";
-  }
-}
-document.getElementById("saveThresholdBtn").onclick = saveThreshold;
-loadThreshold();
+// async function loadThreshold() {
+//   const res = await fetch("http://localhost:3000/api/threshold");
+//   const data = await res.json();
+//   document.getElementById("thresholdInput").value = data.value;
+// }
+// async function saveThreshold() {
+//   const value = Number(document.getElementById("thresholdInput").value);
+//   const msg = document.getElementById("thresholdMsg");
+//   const res = await fetch("http://localhost:3000/api/threshold", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ value })
+//   });
+//   if (res.ok) {
+//     msg.textContent = "✔️";
+//     setTimeout(() => msg.textContent = "", 1500);
+//   } else {
+//     msg.textContent = "Eroare!";
+//   }
+// }
+
+// document.getElementById("saveThresholdBtn").onclick = saveThreshold;
+// loadThreshold();
 
 
 // Fetch la fiecare 10 secunde
