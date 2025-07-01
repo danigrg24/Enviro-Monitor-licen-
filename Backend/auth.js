@@ -25,7 +25,7 @@ function authenticate(req, res) {
     return res.status(401).json({ message: "Parolă incorectă" });
   }
 
-  const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "2h" });
+  const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "24h" });
   res.json({ token });
 }
 
